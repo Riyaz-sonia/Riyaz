@@ -1,0 +1,60 @@
+const player = document.getElementById("player");
+const monster = document.getElementById("monster");
+const diamond = document.getElementById("diamond");
+
+
+let score = 0;
+
+
+// Player movement
+document.addEventListener("keydown", (event) => {
+  if (event.code === "ArrowUp") {
+    movePlayerUp();
+  } else if (event.code === "ArrowDown") {
+    movePlayerDown();
+  }
+});
+
+
+function movePlayerUp() {
+  let currentBottom = parseInt(window.getComputedStyle(player).bottom);
+  if (currentBottom < 80) {
+    player.style.bottom = currentBottom + 20 + "px";
+  }
+}
+
+
+function movePlayerDown() {
+  let currentBottom = parseInt(window.getComputedStyle(player).bottom);
+  if (currentBottom > 20) {
+    player.style.bottom = currentBottom - 20 + "px";
+  }
+}
+
+
+// Collision detection
+setInterval(() => {
+  const playerRect = player.getBoundingClientRect();
+  const diamondRect = diamond.getBoundingClientRect();
+
+
+  if (
+    playerRect.left < diamondRect.right &&
+    playerRect.right > diamondRect.left &&
+    playerRect.top < diamondRect.bottom &&
+    playerRect.bottom > diamondRect.top
+  ) {
+    collectDiamond();
+  }
+}, 100);
+
+
+function collectDiamond() {
+  score++;
+  diamond.style.display = "none";
+  setTimeout(() => {
+    diamond.style.display = "block";
+    diamond.style.right = "-100px";
+  }, 1000);
+  console.log("Score: " + score);
+}
